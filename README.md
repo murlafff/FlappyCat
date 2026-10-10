@@ -79,7 +79,7 @@ javac --version
 ### 2. Clone the repository
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/FlappyCat.git
+git clone https://github.com/murlafff/FlappyCat.git
 ```
 
 Enter the project folder:
