@@ -67,7 +67,8 @@ public class FlappyCat extends JPanel implements ActionListener, KeyListener {
     Timer placePipesTimer;
 
     boolean gameOver = false;
-    double score = 0;
+
+    private final ScoreManager scoreManager = new ScoreManager();
 
     FlappyCat() {
         setPreferredSize(new Dimension(boardWidth, boardHeight));
@@ -76,10 +77,10 @@ public class FlappyCat extends JPanel implements ActionListener, KeyListener {
         addKeyListener(this);
 
         // Load Images
-        backgroundImg = new ImageIcon(getClass().getResource("./flappycatbg.png")).getImage();
-        catImg = new ImageIcon(getClass().getResource("./flappycat.png")).getImage();
-        topPipeImg = new ImageIcon(getClass().getResource("./toppipe.png")).getImage();
-        bottomPipeImg = new ImageIcon(getClass().getResource("./bottompipe.png")).getImage();
+        backgroundImg = new ImageIcon(getClass().getResource("assets/flappycatbg.png")).getImage();
+        catImg = new ImageIcon(getClass().getResource("assets/flappycat.png")).getImage();
+        topPipeImg = new ImageIcon(getClass().getResource("assets/toppipe.png")).getImage();
+        bottomPipeImg = new ImageIcon(getClass().getResource("assets/bottompipe.png")).getImage();
 
         //cat
         cat = new Cat(catImg);
@@ -138,10 +139,10 @@ public class FlappyCat extends JPanel implements ActionListener, KeyListener {
         g.setColor(Color.white);
         g.setFont(new Font("Arial", Font.PLAIN, 32));
         if (gameOver) {
-            g.drawString("Game Over: " + String.valueOf((int) score), 10, 35);
+            g.drawString("Game Over: " + String.valueOf((int) scoreManager.getScore()), 10, 35);
         }
         else {
-            g.drawString(String.valueOf((int) score), 10, 35);
+            g.drawString(String.valueOf((int) scoreManager.getScore()), 10, 35);
         }
     }
 
@@ -158,7 +159,7 @@ public class FlappyCat extends JPanel implements ActionListener, KeyListener {
 
             if (!pipe.passed && cat.x > pipe.x + pipe.width) {
                 pipe.passed = true;
-                score += 0.5;
+                scoreManager.addPipeHalfPoint();
             }
 
             if (collision(cat, pipe)) {
@@ -198,7 +199,7 @@ public class FlappyCat extends JPanel implements ActionListener, KeyListener {
                 cat.y = catY;
                 velocityY = 0;
                 pipes.clear();
-                score = 0;
+                scoreManager.reset();
                 gameOver = false;
                 gameLoop.start();
                 placePipesTimer.start();
